@@ -161,7 +161,7 @@ set_status_message( char* msg )
         Dynamic text needs to be re-rendered and destroyed
         every single frame in order to appear 'dynamic'.
 
-        These are used for score counts or pop up messages.
+        These are used for score counts and pop up messages.
  */
 
 label_t**

@@ -57,18 +57,6 @@ button_list_init( SDL_Renderer* renderer, config_t* game_config )
         button_index = 0;
         button_list = ( button_t** ) malloc( BUTTON_LIST_SIZE * sizeof( button_t* ) );
 
-        /* int continue_game_x = 375; */
-        /* int continue_game_y = 650; */
-        /* label_create( renderer, "NEW GAME", continue_game_x + 5, continue_game_y + 10, 35 );  */
-        /* button_create( continue_game_x,  */
-                        /* continue_game_y,  */
-                        /* 180, */
-                        /* 50,  */
-                        /* &default_color,  */
-                        /* &highlight_color,  */
-                        /* &orange,  */
-                        /* &continue_game ); */
-
         int new_game_x = 375;
         int new_game_y = 650;
         label_create( renderer, "NEW GAME", new_game_x + 5, new_game_y + 10, 35 ); 

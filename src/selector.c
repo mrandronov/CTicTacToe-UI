@@ -323,7 +323,8 @@ get_selector( selector_t* s )
 {
         for ( int i = 0; i < selector_index; i++ )
         {
-                if ( ( selector_list[ i ]->box.x == s->box.x ) && ( selector_list[ i ]->box.y == s->box.y ) )
+                if ( ( selector_list[ i ]->box.x == s->box.x ) && 
+                                ( selector_list[ i ]->box.y == s->box.y ) )
                 {
                         return selector_list[ i ];
                 }

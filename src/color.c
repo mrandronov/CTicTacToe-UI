@@ -20,17 +20,20 @@ SDL_Color hexToColor( char* hexVal )
 {
         char            hexColor[ 3 ];
         hexColor[ 2 ] = '\0';
-        
+
         memcpy( hexColor, hexVal, 2 );
         int r = hexToInt( hexColor );
-        
+
         memcpy( hexColor, hexVal+2, 2 );
         int g = hexToInt( hexColor );
 
         memcpy( hexColor, hexVal+4, 2 );
         int b = hexToInt( hexColor );
 
-        return ( SDL_Color ) { .r =   r,     .g =  g,       .b =  b,       .a = 255 };
+        return ( SDL_Color ) { .r =   r,
+                                .g =  g,
+                                .b =  b,
+                                .a = 255 };
 }
 
 char** theme;
@@ -54,12 +57,12 @@ load_theme( char* theme_path )
 
         (*buffer)[ ret - 1 ] = '\0';
         printf( "Loading theme [ %s ]...\n", *buffer );
-        
+
         theme = (char**) malloc( 5 * sizeof( char* ) );
         for ( int i = 0; i < NUM_THEME_COLORS; i++ )
         {
                 theme[ i ] = ( char* ) malloc( 7 * sizeof( char ) );
-                
+
                 ret = getline( buffer, &bufSize, fptr );
                 assert_msg( ( ret <= 0 ), "Theme color could not be read!" );
                 (*buffer)[ ret - 1 ] = '\0';
@@ -81,7 +84,7 @@ color_init( char* theme_path )
 
         clear           = hexToColor( "000000" );
         white           = hexToColor( "ffffff" );
- 
+
         background      = hexToColor( theme[ 0 ] );
         default_color   = hexToColor( theme[ 1 ] );
         highlight_color = hexToColor( theme[ 2 ] );
@@ -91,23 +94,6 @@ color_init( char* theme_path )
         orange          = hexToColor( "883333" );
         green           = hexToColor( "64c864" );
 }
-
-/*
- * void
- * color_init()
- * {
- *         clear           = ( SDL_Color ) { .r = 0,       .g = 0,         .b = 0,         .a = 0 };
- *         white           = ( SDL_Color ) { .r = 255,     .g = 255,       .b = 255,       .a = 255 };
- * 
- *         background      = ( SDL_Color ) { .r = 46,      .g = 51,        .b = 64,        .a = 255 };
- *         default_color   = ( SDL_Color ) { .r = 201,     .g = 191,       .b = 141,       .a = 255 };
- *         highlight_color = ( SDL_Color ) { .r = 242,     .g = 235,       .b = 198,       .a = 255 };
- *         select_color    = ( SDL_Color ) { .r = 195,     .g = 240,       .b = 174,       .a = 255 };
- *         press_color     = ( SDL_Color ) { .r = 141,     .g = 131,       .b = 81,        .a = 255 };
- *         orange          = ( SDL_Color ) { .r = 200,     .g = 100,       .b = 0,         .a = 255 };
- *         green           = ( SDL_Color ) { .r = 100,     .g = 200,       .b = 100,       .a = 255 };
- * }
- */
 
 void
 set_color( SDL_Renderer* renderer, SDL_Color color )

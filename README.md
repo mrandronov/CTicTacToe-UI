@@ -72,6 +72,8 @@ For example, the following will load the `Cool Blue` theme:
 ./build/TicTacToeGame ./theme/Cool_Blue.th
 ```
 
+A few themes to try: `Cool_Blue.th`, `Purple_Scotch.th`, `Lateral_Rose.th`, `Warm_Office.th`, and `Vita_Anima.th`.
+
 The default theme is used when no arguments are passed.
 
 ## Future Ideas

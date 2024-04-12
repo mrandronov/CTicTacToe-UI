@@ -9,6 +9,12 @@
 #include "game/board.h"
 #include "game/player.h"
 
+enum computer_type_t
+{
+        RANDOM,
+        SMART
+};
+
 typedef struct
 {
         player_t*       humanPlayer;
@@ -17,7 +23,7 @@ typedef struct
         board_t*        board;
 } game_t;
 
-game_t* game_init( int rows, int cols, char playerPiece, char computerPiece );
+game_t* game_init( int rows, int cols, char playerPiece, char computerPiece, enum computer_type_t computerType );
 
 int apply_move( board_t* board, move_t* move );
 

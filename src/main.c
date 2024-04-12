@@ -30,6 +30,7 @@ uint64_t                end;
 float                   delta;
 
 char*                   theme_path;
+char                    winner = ' ';
 
 SDL_Window*             window;
 SDL_Renderer*           renderer;
@@ -134,6 +135,39 @@ draw_all_components()
         draw_dynamic_labels( renderer );
 }
 
+void
+compute_game_state()
+{
+        winner = get_winner( config->game );
+        if ( config->is_game_ongoing )
+        {
+                if ( winner != ' ' || num_vacant_cells( config->game->board ) == 0 )
+                {
+                        config->is_game_ongoing = false;
+                        update_score( config, winner );
+                        disable_board();
+
+                        printf( "Winner is {%c}!\n", winner );
+                        if ( winner == config->playerMarker )
+                        {
+                                set_status_message( "Player won!" );
+                        }
+                        else if ( winner == config->computerMarker )
+                        {
+                                set_status_message( "Computer won!" );
+                        }
+                        else
+                        {
+                                set_status_message( "It's a tie!" );
+                        }
+                }
+                else
+                {
+                        set_status_message( "" );
+                }
+        }
+}
+
 int
 main( int argc, char* argv[] )
 {
@@ -145,9 +179,8 @@ main( int argc, char* argv[] )
         {
                 theme_path = "./themes/Default.th";
         }
-        init();
 
-        char winner = ' ';
+        init();
 
         while ( config->is_game_running == true )
         {
@@ -160,9 +193,7 @@ main( int argc, char* argv[] )
                 set_color( renderer, background );
                 SDL_RenderClear( renderer );
                 
-                /* 
-                        All process drawing
-                */
+                /* All process drawing */
 
                 draw_all_components();
 
@@ -172,34 +203,7 @@ main( int argc, char* argv[] )
 
                 /* Game Logic */
 
-                winner = get_winner( config->game );
-                if ( config->is_game_ongoing )
-                {
-                        if ( winner != ' ' || num_vacant_cells( config->game->board ) == 0 )
-                        {
-                                update_score( config, winner );
-                                disable_board();
-                                config->is_game_ongoing = false;
-
-                                printf( "Winner is {%c}!\n", winner );
-                                if ( winner == config->playerMarker )
-                                {
-                                        set_status_message( "Player won!" );
-                                }
-                                else if ( winner == config->computerMarker )
-                                {
-                                        set_status_message( "Computer won!" );
-                                }
-                                else
-                                {
-                                        set_status_message( "It's a tie!" );
-                                }
-                        }
-                        else
-                        {
-                                set_status_message( "" );
-                        }
-                }
+                compute_game_state();
 
                 /* Fix the framerate to 60 frames per second */
 

@@ -17,12 +17,14 @@ typedef struct
 
 player_t* init_human_player( char playerPiece );
 
-player_t* init_computer_player( char computerPiece );
+player_t* init_smart_computer_player( char computerPiece );
 
-move_t*
-get_player_move( board_t* board, char playerPiece, char computerPiece );
+player_t* init_random_computer_player( char computerPiece );
 
-move_t*
-get_computer_move( board_t* board, char playerPiece, char computerPiece );
+move_t* get_player_move( board_t* board, char playerPiece, char computerPiece );
+
+move_t* get_smart_computer_move( board_t* board, char playerPiece, char computerPiece );
+
+move_t* get_random_computer_move( board_t* board, char playerPiece, char computerPiece );
 
 #endif /* __LIB_PLAYER_H__ */

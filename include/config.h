@@ -6,12 +6,6 @@
 
 #include "game/game.h"
 
-enum computer_type_t
-{
-        RANDOM,
-        SMART
-};
-
 typedef struct
 {
         char                    playerMarker;

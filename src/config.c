@@ -15,7 +15,7 @@ config_init()
         config->is_game_ongoing = true;
         config->is_game_running = true;
 
-        config->game = game_init( 3, 3, config->playerMarker, config->computerMarker ); 
+        config->game = game_init( 3, 3, config->playerMarker, config->computerMarker, config->computerType ); 
 
         return config;
 }

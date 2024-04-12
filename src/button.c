@@ -29,7 +29,7 @@ new_game()
         board_destroy();
         game_free( config->game );
         
-        config->game = game_init( 3, 3, config->playerMarker, config->computerMarker );
+        config->game = game_init( 3, 3, config->playerMarker, config->computerMarker, config->computerType );
         set_status_message( "" );
         board_init( button_renderer, config );
 

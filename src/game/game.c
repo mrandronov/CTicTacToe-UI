@@ -8,12 +8,15 @@
 game_t*         globalGame;
 
 game_t*
-game_init( int rows, int cols, char humanPiece, char computerPiece )
+game_init( int rows, int cols, char humanPiece, char computerPiece, enum computer_type_t computerType )
 {
         game_t*                 game = ( game_t* ) malloc( sizeof( game_t ) );
 
         game->humanPlayer = init_human_player( humanPiece );
-        game->computerPlayer = init_computer_player( computerPiece );
+        if ( computerType == SMART )
+                game->computerPlayer = init_smart_computer_player( computerPiece );
+        else if ( computerType == RANDOM )
+                game->computerPlayer = init_random_computer_player( computerPiece );
 
         game->moveHistory = ( move_t* ) malloc( rows * cols * sizeof( move_t ) );
         game->board = board_create( rows, cols );
@@ -227,9 +230,6 @@ game_loop( game_t* game )
 
         while ( winner == ' ' && num_vacant_cells( game->board ) != 0 )
         {
-                print_board( game->board );
-
-                printf( "Making move for %s : %c %c\n", currentPlayer->name, currentPlayer->piece, opposingPiece );
                 move_t*         playerMove = currentPlayer->makeMove( game->board,
                                                                 currentPlayer->piece,
                                                                 opposingPiece );
@@ -248,21 +248,6 @@ game_loop( game_t* game )
                 }
 
                 winner = get_winner( game );
-        }
-
-        print_board( game->board );
-
-        if ( winner == game->humanPlayer->piece )
-        {
-                printf( "Player (%c) won!\n", game->humanPlayer->piece );
-        }
-        else if ( winner == game->computerPlayer->piece )
-        {
-                printf( "Computer (%c) won!\n", game->computerPlayer->piece );
-        }
-        else
-        {
-                printf( "It was a tie!\n" );
         }
 
         return 0;

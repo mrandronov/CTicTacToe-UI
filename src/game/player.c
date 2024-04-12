@@ -1,6 +1,9 @@
+#include <time.h>
+#include <stdlib.h>
 
 #include "game/player.h"
 #include "game/game.h"
+
 
 player_t*
 init_player( char* name, 
@@ -24,10 +27,22 @@ init_human_player( char playerPiece )
 }
 
 player_t*
-init_computer_player( char computerPiece )
+init_smart_computer_player( char computerPiece )
 {
-        return init_player( "Computer", computerPiece, &get_computer_move );
+        return init_player( "Computer", computerPiece, &get_smart_computer_move );
 }
+
+player_t*
+init_random_computer_player( char computerPiece )
+{
+        srand(time(NULL));
+
+        return init_player( "Computer", computerPiece, &get_random_computer_move );
+}
+
+/*
+        This function is no longer used in the UI version of the game.
+ */
 
 move_t*
 get_player_move( board_t* board, char playerPiece, char computerPiece )
@@ -54,11 +69,6 @@ get_player_move( board_t* board, char playerPiece, char computerPiece )
 
         return move;
 }
-
-/*
-        TODO: Implement Alpha-Beta pruning technique to
-        determine computer move.
- */
 
 int
 minimax( int alpha, int beta, board_t* board, char computerPiece, char playerPiece, bool maximizingPlayer )
@@ -157,15 +167,19 @@ minimax( int alpha, int beta, board_t* board, char computerPiece, char playerPie
         return 0;
 }
 
+/*
+        The computer selects a cell to move on based on the Alpha-Beta pruning
+        mini-max algorithm. The algorithm is ran on each move and the computer
+        generally makes a seemingly intelligent decision.
+ */
+
 move_t*
-get_computer_move( board_t* board, char computerPiece, char playerPiece )
+get_smart_computer_move( board_t* board, char computerPiece, char playerPiece )
 {
         int                     maxScore = INT_MIN;
         move_t*                 move = ( move_t* ) malloc( sizeof( move_t ) );
 
         move->piece = computerPiece;
-
-        printf( "Computer is thinking... " );
 
         for ( int i = 0; i < board->rows; i++ )
         {
@@ -181,6 +195,7 @@ get_computer_move( board_t* board, char computerPiece, char playerPiece )
                                                                 computerPiece,
                                                                 playerPiece,
                                                                 true );
+
                                 board->cells[ i ][ j ].piece = ' ';
 
                                 if ( score > maxScore )
@@ -193,7 +208,32 @@ get_computer_move( board_t* board, char computerPiece, char playerPiece )
                 }
         }
 
-        printf( "Computer marks cell (%d %d) with %c!\n", move->row, move->col, move->piece );
+        return move;
+}
+
+/*
+ * The computer selects a random available cell on the board to make a move.
+ */
+
+move_t*
+get_random_computer_move( board_t* board, char computerPiece, char playerPiece )
+{
+        move_t*                 move = ( move_t* ) malloc( sizeof( move_t ) );
+        move->piece = computerPiece;
+        
+        int pos = rand() % 9;
+        int i = pos / 3;
+        int j = pos % 3;
+
+        while( board->cells[ i ][ j ].piece != ' ' )
+        {
+                pos = rand() % 9;
+                i = pos / 3;
+                j = pos % 3;
+        }
+
+        move->row = i+1;
+        move->col = j+1;
 
         return move;
 }

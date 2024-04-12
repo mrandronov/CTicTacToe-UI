@@ -89,7 +89,10 @@ cell_press( selector_t* s )
 
         /* Player makes a move at this cell. */
         
-        move_t*         playerMove = &(move_t) { .row = pos->row+1, .col = pos->col+1, .piece = config->playerMarker };
+        move_t*         playerMove = &(move_t) { .row = pos->row+1, 
+                                                .col = pos->col+1, 
+                                                .piece = config->playerMarker };
+
         apply_move( config->game->board, playerMove );
 
         /* Check if player's move causes a game over scenario. */
@@ -106,13 +109,11 @@ cell_press( selector_t* s )
         move_t*         computerMove = config->game->computerPlayer->makeMove( config->game->board,
                                                                                 config->game->computerPlayer->piece,
                                                                                 config->game->humanPlayer->piece );
+
         selector_t*     computerCell = get_selector( &board->cells[ computerMove->col - 1 ][ computerMove->row - 1 ] );
 
         computer_press( computerCell );
         apply_move( config->game->board, computerMove );
-        
-        printf( "Moves are complete!\n" );
-        print_board( config->game->board );
 
         return 0;
 }
@@ -169,8 +170,7 @@ disable_board()
         {
                 for ( int j = 0; j < cols; j++ )
                 {
-                        selector_t*     cell = get_selector( &board->cells[ j ][ i ] );
-                        cell->is_disabled = 1;
+                        get_selector( &board->cells[ j ][ i ] )->is_disabled = 1;
                 }
         }
 }
@@ -192,31 +192,6 @@ board_destroy()
         }
 
         free( board );
-}
-
-void
-draw_grid_lines( SDL_Renderer* renderer )
-{
-        for ( int i = 0; i <= rows; i++ )
-        {
-                for ( int j = 0; j <= cols; j++ )
-                {
-                        set_color( renderer, press_color );
-                        SDL_RenderDrawLine( renderer, 
-                                        X_OFFSET, 
-                                        Y_OFFSET + ( CELL_HEIGHT * j ), 
-                                        X_OFFSET + ( CELL_WIDTH * rows ), 
-                                        Y_OFFSET + ( CELL_HEIGHT * j ) ); 
-
-                        SDL_RenderDrawLine( renderer, 
-                                        X_OFFSET + ( CELL_WIDTH * i ), 
-                                        Y_OFFSET, 
-                                        X_OFFSET + ( CELL_WIDTH * i ), 
-                                        Y_OFFSET + ( CELL_HEIGHT * cols ) ); 
-                }
-        }
-
-
 }
 
 void
